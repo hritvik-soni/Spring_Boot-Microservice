@@ -10,6 +10,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -17,13 +19,13 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "product_table")
 public class Product {
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String productId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY )
+    private Long productId;
     private String productName;
     private  String productDescription;
     private ProductCategory productCategory;
-    private Long productPrice;
+    private BigDecimal productPrice;
     private Integer productQuantity;
-    private String SqCode;
+    private String skuCode;
 
 }
