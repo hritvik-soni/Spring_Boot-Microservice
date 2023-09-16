@@ -27,6 +27,7 @@ public class ProductService {
                                 .isInStock(Product.getProductQuantity() > 0)
                                 .build()
                 ).toList();
+
     }
 
     public void addProduct(Product prod) {
