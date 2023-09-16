@@ -1,19 +1,17 @@
-package com.hritvik.orderservice;
+package com.hritvik.discoveryserver;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
 
 @SpringBootApplication
-@EnableDiscoveryClient
-public class OrderServiceApplication {
+@EnableEurekaServer
+
+public class DiscoveryServerApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(OrderServiceApplication.class, args);
-//		System.out.println("order works");
+		SpringApplication.run(DiscoveryServerApplication.class, args);
 	}
-
-
 
 }

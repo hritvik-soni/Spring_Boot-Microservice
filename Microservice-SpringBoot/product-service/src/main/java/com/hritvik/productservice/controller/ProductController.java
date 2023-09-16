@@ -8,23 +8,24 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("api/product")
 public class ProductController {
     @Autowired
     ProductService productService;
 
-    @PostMapping("add/product")
+    @PostMapping("add")
     public void addProduct(@RequestBody Product prod) {
         productService.addProduct(prod);
     }
-    @GetMapping("product")
+    @GetMapping("all")
     public List<Product> getAllProduct(){
         return productService.getAllProduct();
     }
-    @GetMapping("product/id/{id}")
-    public Product getProdById(@PathVariable Long id){
+    @GetMapping("id")
+    public Product getProdById(@RequestParam("id") Long id){
         return productService.getProdById(id);
     }
-    @DeleteMapping("product")
+    @DeleteMapping("delete")
     public String DeleteProduct(@RequestParam("id") Long productId)
     {
         return productService.DeleteProduct(productId);
