@@ -1,10 +1,7 @@
 package com.hritvik.productservice.model;
 
 import com.hritvik.productservice.model.enums.ProductCategory;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,6 +16,7 @@ import java.math.BigDecimal;
 @Entity
 @Table(name = "product_table")
 public class Product {
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY )
     private Long productId;
     private String productName;
