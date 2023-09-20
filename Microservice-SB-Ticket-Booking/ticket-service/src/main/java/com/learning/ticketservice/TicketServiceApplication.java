@@ -9,7 +9,9 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 public class TicketServiceApplication {
 
 	public static void main(String[] args) {
+
 		SpringApplication.run(TicketServiceApplication.class, args);
+		System.out.println("ticket");
 	}
 
 }
