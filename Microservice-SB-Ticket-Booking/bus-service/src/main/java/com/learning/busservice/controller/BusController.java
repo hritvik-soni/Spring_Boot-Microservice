@@ -29,4 +29,8 @@ public class BusController {
 
         return "Only bus operator can create bus!!!";
     }
+    @GetMapping("search/bus")
+    public String searchBus(@RequestParam String cityFrom,@RequestParam String cityTo){
+        return busService.searchBus(cityFrom,cityTo);
+    }
 }

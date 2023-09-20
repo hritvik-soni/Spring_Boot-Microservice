@@ -13,6 +13,7 @@ import java.time.LocalTime;
 @NoArgsConstructor
 @Builder
 public class BusRequestInput {
+    private String busName;
     private String busCityFrom;
     private String busCityTo;
     @Column(unique = true)

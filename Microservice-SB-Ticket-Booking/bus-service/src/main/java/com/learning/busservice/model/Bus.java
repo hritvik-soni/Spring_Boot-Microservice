@@ -26,6 +26,7 @@ public class Bus {
     private String busCityFrom;
     private String busCityTo;
     private String busNumber;
+    private String busName;
     private String busOppNumber;
     private String busOppEmail;
     private String busOppName;

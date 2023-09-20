@@ -14,9 +14,21 @@ public class BusService {
 
     public String createBus(BusRequestInput busRequestInput, BusOppRequestInput oppDetails) {
         Bus newBus = Bus.builder()
-                .
+                .busCityFrom(busRequestInput.getBusCityFrom())
+                .busCityTo(busRequestInput.getBusCityTo())
+                .busNumber(busRequestInput.getBusNumber())
+                .busTicketPrice(busRequestInput.getBusTicketPrice())
+                .busDepartureTime(busRequestInput.getBusDepartureTime())
+                .busArrivalTime(busRequestInput.getBusArrivalTime())
+                .busOppNumber(oppDetails.getBusOppNumber())
+                .busOppName(oppDetails.getBusOppName())
+                .busOppEmail(oppDetails.getBusOppEmail())
+                .build();
+        Bus savedBus = busRepo.save(newBus);
+        return "A new Bus service is created : "+ savedBus.getBusNumber();
+    }
 
+    public String searchBus(String cityFrom, String cityTo) {
 
-                .build()
     }
 }
