@@ -45,13 +45,21 @@ public class BusService {
 
     public BusDetailsForTicket detailBus(String busNumber) {
 
-        Optional<Bus> currBus = busRepo.findByBusNumber(busNumber);
+      Bus currBus = busRepo.findByBusNumber(busNumber);
 
-        if(currBus.isEmpty()){
+        if(currBus==null){
             return null;
         }
         return BusDetailsForTicket.builder()
-
+                .busCityFrom(currBus.getBusCityFrom())
+                .busCityTo(currBus.getBusCityTo())
+                .busNumber(currBus.getBusNumber())
+                .busName(currBus.getBusName())
+                .busTotalSeats(currBus.getBusTotalSeats())
+                .busOppNumber(currBus.getBusOppNumber())
+                .busTicketPrice(currBus.getBusTicketPrice())
+                .busDepartureTime(currBus.getBusDepartureTime())
+                .busArrivalTime(currBus.getBusArrivalTime())
 
                 .build();
     }

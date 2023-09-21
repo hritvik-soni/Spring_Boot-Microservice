@@ -1,14 +1,12 @@
 package com.learning.ticketservice.controller;
 
+import com.learning.ticketservice.model.Ticket;
 import com.learning.ticketservice.model.dto.BusDetailsInput;
 import com.learning.ticketservice.model.dto.TicketRequestInput;
 import com.learning.ticketservice.model.dto.UserDetailsForTicketInput;
 import com.learning.ticketservice.service.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriBuilder;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -51,7 +49,10 @@ public class TicketController {
     }
 
 
-
+  @GetMapping("all")
+    public List<Ticket> getAllTickets (){
+        return ticketService.getAllTicket();
+  }
 
 
 

@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class BusOppRequestInput {
+public class BusOppRequestOutput {
     private String busOppNumber;
     private String busOppEmail;
     private String busOppName;

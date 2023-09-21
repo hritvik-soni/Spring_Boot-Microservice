@@ -1,7 +1,7 @@
 package com.learning.userdetails.service;
 
 import com.learning.userdetails.model.User;
-import com.learning.userdetails.model.dto.BusOppRequestInput;
+import com.learning.userdetails.model.dto.BusOppRequestOutput;
 import com.learning.userdetails.model.dto.UserDetailsForTicket;
 import com.learning.userdetails.model.dto.UserRequestInput;
 import com.learning.userdetails.model.dto.UserRequestOutput;
@@ -51,12 +51,12 @@ public class UserService {
                 .build();
     }
 
-    public BusOppRequestInput getBusUserInfo(String email) {
+    public BusOppRequestOutput getBusUserInfo(String email) {
         User currentUser = userRepo.findByUserEmail(email);
         if(currentUser==null){
             return null;
         }
-        return BusOppRequestInput.builder()
+        return BusOppRequestOutput.builder()
                 .busOppEmail(currentUser.getUserEmail())
                 .busOppNumber(currentUser.getUserMobileNumber())
                 .busOppName(currentUser.getUserName())
@@ -69,8 +69,11 @@ public class UserService {
             return null;
         }
         return UserDetailsForTicket.builder()
-
-
+                .userName(currentUser.getUserName())
+                .userEmail(currentUser.getUserEmail())
+                .userMobileNumber(currentUser.getUserMobileNumber())
+                .userAge(currentUser.getUserAge())
+                .gender(currentUser.getGender())
 
                 .build();
 

@@ -45,7 +45,7 @@ public class Ticket {
     private String userEmail;
     private String userMobileNumber;
     private Integer userAge;
-    private Gender gender;
+    private Gender userGender;
 
     @CreationTimestamp
     private LocalDateTime createdAt;

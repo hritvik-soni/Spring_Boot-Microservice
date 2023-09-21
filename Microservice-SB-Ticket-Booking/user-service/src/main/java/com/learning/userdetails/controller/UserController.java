@@ -1,6 +1,6 @@
 package com.learning.userdetails.controller;
 
-import com.learning.userdetails.model.dto.BusOppRequestInput;
+import com.learning.userdetails.model.dto.BusOppRequestOutput;
 import com.learning.userdetails.model.dto.UserDetailsForTicket;
 import com.learning.userdetails.model.dto.UserRequestInput;
 import com.learning.userdetails.model.dto.UserRequestOutput;
@@ -23,7 +23,7 @@ public class UserController {
         return userService.getUserInfo(email);
     }
     @GetMapping("/info/bus")
-    public BusOppRequestInput getBusUserInfo(@RequestParam String email){
+    public BusOppRequestOutput getBusUserInfo(@RequestParam String email){
         return userService.getBusUserInfo(email);
     }
 
