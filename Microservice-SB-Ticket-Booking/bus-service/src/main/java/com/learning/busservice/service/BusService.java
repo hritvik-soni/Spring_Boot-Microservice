@@ -14,6 +14,7 @@ public class BusService {
 
     public String createBus(BusRequestInput busRequestInput, BusOppRequestInput oppDetails) {
         Bus newBus = Bus.builder()
+                .busName(busRequestInput.getBusName())
                 .busCityFrom(busRequestInput.getBusCityFrom())
                 .busCityTo(busRequestInput.getBusCityTo())
                 .busNumber(busRequestInput.getBusNumber())
