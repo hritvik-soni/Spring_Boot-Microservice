@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 
 @Data
 @NoArgsConstructor
@@ -28,7 +29,7 @@ public class Ticket {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer ticketId;
-    @GeneratedValue(strategy = GenerationType.UUID)
+
     private String ticketNumber;
 
     private String busCityFrom;
@@ -38,8 +39,8 @@ public class Ticket {
     private Integer busSeatNumber;
     private String busOppNumber;
     private Integer busTicketPrice;
-    private LocalTime busDepartureTime;
-    private LocalTime busArrivalTime;
+    private String busDepartureTime;
+    private String busArrivalTime;
 
     private String userName;
     private String userEmail;

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 
 @Service
@@ -22,6 +23,7 @@ public class TicketService {
     public String createTicket(UserDetailsForTicketInput userDetailsForTicket, BusDetailsInput busDetailsInput) {
 
         Ticket newTicket = Ticket.builder()
+                .ticketNumber(UUID.randomUUID().toString())
                 .busCityFrom(busDetailsInput.getBusCityFrom())
                 .busCityTo(busDetailsInput.getBusCityTo())
                 .busNumber(busDetailsInput.getBusNumber())

@@ -27,8 +27,8 @@ public class BusService {
                 .busNumber(busRequestInput.getBusNumber())
                 .busTotalSeats(busRequestInput.getBusTotalSeats())
                 .busTicketPrice(busRequestInput.getBusTicketPrice())
-                .busDepartureTime(LocalTime.parse(busRequestInput.getBusDepartureTime()))
-                .busArrivalTime(LocalTime.parse(busRequestInput.getBusArrivalTime()))
+                .busDepartureTime(busRequestInput.getBusDepartureTime())
+                .busArrivalTime(busRequestInput.getBusArrivalTime())
 
                 .busOppNumber(oppDetails.getBusOppNumber())
                 .busOppName(oppDetails.getBusOppName())

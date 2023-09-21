@@ -31,8 +31,8 @@ public class Bus {
     private String busOppEmail;
     private String busOppName;
     private Integer busTicketPrice;
-    private LocalTime busDepartureTime;
-    private LocalTime busArrivalTime;
+    private String busDepartureTime;
+    private String busArrivalTime;
     private Integer busTotalSeats;
 
     @CreationTimestamp

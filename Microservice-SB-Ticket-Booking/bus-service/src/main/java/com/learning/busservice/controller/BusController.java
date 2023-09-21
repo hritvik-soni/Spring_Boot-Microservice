@@ -66,7 +66,7 @@ public class BusController {
 //    }
 
     @GetMapping("/detail")
-    public BusDetailsForTicket detailBus(@RequestParam String busNumber){
+    public BusDetailsForTicket detailBus(@RequestParam("busNumber") String busNumber){
         return busService.detailBus(busNumber);
     }
 }

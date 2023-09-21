@@ -21,7 +21,7 @@ public class BusDetailsForTicket {
     private Integer busTotalSeats;
     private String busOppNumber;
     private Integer busTicketPrice;
-    private LocalTime busDepartureTime;
-    private LocalTime busArrivalTime;
+    private String busDepartureTime;
+    private String busArrivalTime;
 
 }
