@@ -1,5 +1,6 @@
 package com.learning.ticketservice.model.dto;
 
+import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,6 +12,7 @@ import java.time.LocalTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+
 
 public class BusDetailsInput {
 
