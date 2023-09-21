@@ -2,6 +2,7 @@ package com.learning.userdetails.service;
 
 import com.learning.userdetails.model.User;
 import com.learning.userdetails.model.dto.BusOppRequestInput;
+import com.learning.userdetails.model.dto.UserDetailsForTicket;
 import com.learning.userdetails.model.dto.UserRequestInput;
 import com.learning.userdetails.model.dto.UserRequestOutput;
 import com.learning.userdetails.repository.IUserRepo;
@@ -60,5 +61,18 @@ public class UserService {
                 .busOppNumber(currentUser.getUserMobileNumber())
                 .busOppName(currentUser.getUserName())
                 .build();
+    }
+
+    public UserDetailsForTicket getUserInfoForTicket(String email) {
+        User currentUser = userRepo.findByUserEmail(email);
+        if(currentUser==null){
+            return null;
+        }
+        return UserDetailsForTicket.builder()
+
+
+
+                .build();
+
     }
 }

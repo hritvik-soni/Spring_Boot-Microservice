@@ -18,6 +18,7 @@ public class BusRequestInput {
     private String busCityTo;
     @Column(unique = true)
     private String busNumber;
+    private Integer busTotalSeats;
     private Integer busTicketPrice;
     private LocalTime busDepartureTime;
     private LocalTime busArrivalTime;

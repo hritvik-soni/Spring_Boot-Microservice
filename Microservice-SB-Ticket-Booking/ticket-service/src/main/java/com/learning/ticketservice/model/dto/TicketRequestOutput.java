@@ -9,11 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UserDetailsForTicketInput {
 
-    private String userName;
-    private String userEmail;
-    private String userMobileNumber;
-    private Integer userAge;
-    private Gender gender;
+public class TicketRequestOutput {
+
+
 }

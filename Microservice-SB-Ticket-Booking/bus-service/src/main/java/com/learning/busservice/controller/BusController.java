@@ -1,5 +1,6 @@
 package com.learning.busservice.controller;
 
+import com.learning.busservice.model.dto.BusDetailsForTicket;
 import com.learning.busservice.model.dto.BusOppRequestInput;
 import com.learning.busservice.model.dto.BusRequestInput;
 import com.learning.busservice.service.BusService;
@@ -29,8 +30,18 @@ public class BusController {
 
         return "Only bus operator can create bus!!!";
     }
-    @GetMapping("search/bus")
+    @GetMapping("/search/bus")
     public String searchBus(@RequestParam String cityFrom,@RequestParam String cityTo){
         return busService.searchBus(cityFrom,cityTo);
+    }
+
+//    @GetMapping("/busIsValid")
+//    public boolean busIsValid"(@RequestParam String busNumber){
+//        return busService.busIsValid(busNumber);
+//    }
+
+    @GetMapping("/detail")
+    public BusDetailsForTicket detailBus(@RequestParam String busNumber){
+        return busService.detailBus(busNumber);
     }
 }

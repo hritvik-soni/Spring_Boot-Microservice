@@ -1,6 +1,7 @@
 package com.learning.userdetails.controller;
 
 import com.learning.userdetails.model.dto.BusOppRequestInput;
+import com.learning.userdetails.model.dto.UserDetailsForTicket;
 import com.learning.userdetails.model.dto.UserRequestInput;
 import com.learning.userdetails.model.dto.UserRequestOutput;
 import com.learning.userdetails.service.UserService;
@@ -13,7 +14,7 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    @PostMapping("/name")
+    @PostMapping("/new")
     public String createUser(@RequestBody UserRequestInput userRequestInput){
         return userService.createUser(userRequestInput);
     }
@@ -26,4 +27,8 @@ public class UserController {
         return userService.getBusUserInfo(email);
     }
 
+    @GetMapping("/info/ticket")
+    public UserDetailsForTicket getUserInfoForTicket(@RequestParam String email){
+        return userService.getUserInfoForTicket(email);
+    }
 }

@@ -33,6 +33,8 @@ public class Bus {
     private Integer busTicketPrice;
     private LocalTime busDepartureTime;
     private LocalTime busArrivalTime;
+    private Integer busTotalSeats;
+
     @CreationTimestamp
     private LocalDateTime createdAt;
     @UpdateTimestamp
