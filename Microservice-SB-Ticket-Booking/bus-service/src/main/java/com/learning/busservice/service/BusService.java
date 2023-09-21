@@ -39,7 +39,7 @@ public class BusService {
     }
 
     public boolean busIsValid(String busNumber) {
-        return busRepo.findByBusNumber(busNumber).isPresent();
+        return busRepo.findByBusNumber(busNumber) != null;
     }
 
 
