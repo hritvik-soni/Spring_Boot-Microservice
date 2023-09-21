@@ -12,6 +12,6 @@ import lombok.NoArgsConstructor;
 
 public class TicketRequestInput {
 
-
+    private String ticketNumber;
 
 }
