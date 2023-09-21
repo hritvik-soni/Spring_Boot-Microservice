@@ -20,6 +20,6 @@ public class BusRequestInput {
     private String busNumber;
     private Integer busTotalSeats;
     private Integer busTicketPrice;
-    private LocalTime busDepartureTime;
-    private LocalTime busArrivalTime;
+    private String busDepartureTime;
+    private String busArrivalTime;
 }

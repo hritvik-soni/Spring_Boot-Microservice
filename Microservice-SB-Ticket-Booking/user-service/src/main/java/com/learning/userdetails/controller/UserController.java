@@ -19,16 +19,16 @@ public class UserController {
         return userService.createUser(userRequestInput);
     }
     @GetMapping("/info")
-    public UserRequestOutput getUserInfo(@RequestParam String email){
+    public UserRequestOutput getUserInfo(@RequestParam("email") String email){
         return userService.getUserInfo(email);
     }
     @GetMapping("/info/bus")
-    public BusOppRequestOutput getBusUserInfo(@RequestParam String email){
+    public BusOppRequestOutput getBusUserInfo(@RequestParam("email") String email){
         return userService.getBusUserInfo(email);
     }
 
     @GetMapping("/info/ticket")
-    public UserDetailsForTicket getUserInfoForTicket(@RequestParam String email){
+    public UserDetailsForTicket getUserInfoForTicket(@RequestParam("email") String email){
         return userService.getUserInfoForTicket(email);
     }
 }

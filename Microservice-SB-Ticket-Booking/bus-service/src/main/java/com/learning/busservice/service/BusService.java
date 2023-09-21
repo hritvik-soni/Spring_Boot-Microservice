@@ -6,8 +6,11 @@ import com.learning.busservice.model.dto.BusOppRequestInput;
 import com.learning.busservice.model.dto.BusRequestInput;
 import com.learning.busservice.repository.IBusRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalTime;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -17,17 +20,20 @@ public class BusService {
 
     public String createBus(BusRequestInput busRequestInput, BusOppRequestInput oppDetails) {
         Bus newBus = Bus.builder()
+
                 .busName(busRequestInput.getBusName())
                 .busCityFrom(busRequestInput.getBusCityFrom())
                 .busCityTo(busRequestInput.getBusCityTo())
                 .busNumber(busRequestInput.getBusNumber())
                 .busTotalSeats(busRequestInput.getBusTotalSeats())
                 .busTicketPrice(busRequestInput.getBusTicketPrice())
-                .busDepartureTime(busRequestInput.getBusDepartureTime())
-                .busArrivalTime(busRequestInput.getBusArrivalTime())
+                .busDepartureTime(LocalTime.parse(busRequestInput.getBusDepartureTime()))
+                .busArrivalTime(LocalTime.parse(busRequestInput.getBusArrivalTime()))
+
                 .busOppNumber(oppDetails.getBusOppNumber())
                 .busOppName(oppDetails.getBusOppName())
                 .busOppEmail(oppDetails.getBusOppEmail())
+
                 .build();
         Bus savedBus = busRepo.save(newBus);
         return "A new Bus service is created : "+ savedBus.getBusNumber();
