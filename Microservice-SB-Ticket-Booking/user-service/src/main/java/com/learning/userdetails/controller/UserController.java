@@ -1,12 +1,11 @@
 package com.learning.userdetails.controller;
 
-import com.learning.userdetails.model.User;
+import com.learning.userdetails.model.Users;
 import com.learning.userdetails.model.dto.*;
 import com.learning.userdetails.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.service.annotation.GetExchange;
 
 import java.util.List;
 
@@ -24,7 +23,7 @@ public class UserController {
         return userService.createUser(userRequestInput);
     }
     @GetMapping("/all")
-    public List<User> getAllUser(){
+    public List<Users> getAllUser(){
         return userService.getAllUsers();
     }
     @GetMapping("/info")
