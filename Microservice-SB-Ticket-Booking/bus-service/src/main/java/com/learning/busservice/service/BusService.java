@@ -9,7 +9,7 @@ import com.learning.busservice.repository.IBusRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.*;
 
 @Service
 public class BusService {
@@ -37,16 +37,43 @@ public class BusService {
         return "A new Bus service is created : "+ savedBus.getBusNumber();
     }
 
+    /**
+     *
+     * @param cityFrom
+     * @param cityTo
+     * @return
+     */
+
     public List<BusRequestOutput> searchBus(String cityFrom, String cityTo) {
 
-        boolean busList;
-        return List<Bus> busList = busRepo.findAll()
+
+
+       List<Bus> busList = busRepo.findAll()
                 .stream()
                 .filter(busInfo -> busInfo.getBusCityFrom().equals(cityFrom))
                 .filter(busInfo -> busInfo.getBusCityTo().equals(cityTo))
                 .toList();
+       List<BusRequestOutput> outputList = new ArrayList<>();
 
-        
+        for (Bus currBus : busList) {
+
+            BusRequestOutput ans = BusRequestOutput.builder()
+                    .busName(currBus.getBusName())
+                    .busCityFrom(currBus.getBusCityFrom())
+                    .busCityTo(currBus.getBusCityTo())
+                    .busTicketPrice(currBus.getBusTicketPrice())
+                    .busDepartureTime(currBus.getBusDepartureTime())
+                    .busArrivalTime(currBus.getBusArrivalTime())
+                    .build();
+
+            outputList.add(ans);
+
+        }
+        if(outputList.isEmpty()){
+            throw new RuntimeException("No bus for this route");
+        }
+        return outputList;
+
     }
 
     public boolean busIsValid(String busNumber) {

@@ -5,12 +5,15 @@ import com.learning.busservice.model.Bus;
 import com.learning.busservice.model.dto.BusDetailsForTicket;
 import com.learning.busservice.model.dto.BusOppRequestInput;
 import com.learning.busservice.model.dto.BusRequestInput;
+import com.learning.busservice.model.dto.BusRequestOutput;
 import com.learning.busservice.service.BusService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -23,6 +26,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/bus")
+@Validated
 public class BusController {
 
     @Autowired
@@ -35,7 +39,7 @@ public class BusController {
 
 
     @PostMapping("/new")
-    public String createBus(@RequestBody BusRequestInput busRequestInput, @RequestParam("email") String email){
+    public String createBus(@Valid @RequestBody BusRequestInput busRequestInput, @RequestParam("email") String email){
         System.out.println("user-service/api/user/info/bus?email="+email);
 //        String uri = "user-service/api/user/info/bus" ;
         if(email.endsWith("@bus.com")){
@@ -59,21 +63,21 @@ public class BusController {
 
         return "Only bus operator can create bus!!!";
     }
-    @GetMapping("/search/bus")
-    public String searchBus(@RequestParam String cityFrom,@RequestParam String cityTo){
+    @GetMapping("/search")
+    public List<BusRequestOutput> searchBus(@RequestParam String cityFrom, @RequestParam String cityTo){
         return busService.searchBus(cityFrom,cityTo);
     }
 
-//    @GetMapping("/busIsValid")
-//    public boolean busIsValid"(@RequestParam String busNumber){
-//        return busService.busIsValid(busNumber);
-//    }
+    @GetMapping("/busIsValid")
+    public boolean busIsValid(@RequestParam String busNumber){
+        return busService.busIsValid(busNumber);
+    }
 
     @GetMapping("/detail")
     public BusDetailsForTicket detailBus(@RequestParam("busNumber") String busNumber){
         return busService.detailBus(busNumber);
     }
-    @GetMapping("/buses")
+    @GetMapping("/all")
     public List<Bus> getAllBus(){
         return busService.getAllBus();
     }
@@ -86,13 +90,14 @@ public class BusController {
 //                    restTemplate.getForObject("http://user-service/api/user/info/bus?email=bus1@bus.com",
 //                    BusOppRequestInput.class);
 
-            boolean isVerified = webClientBuilder.build().get()
-                    .uri("http://user-service/api/user/info/bus?email="+email)
+            boolean isVerified = Boolean.TRUE.equals(webClientBuilder.build().get()
+                    .uri("http://user-service/api/user/info/bus/isVerified?email=" + email+"&password="+userPassword)
                     .retrieve()
                     .bodyToMono(boolean.class)
-                    .block();
+                    .block());
 
-            if(isVerified==false){
+
+            if(!isVerified){
                 return "Bus operator not found or Invalid credentials!!! ";
             }
             return busService.removeBus(busNumber,email);

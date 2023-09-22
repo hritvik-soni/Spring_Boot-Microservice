@@ -78,4 +78,9 @@ public class UserService {
                 .build();
 
     }
+
+    public boolean getUserIsVerified(String email, String password) {
+        User currUser = userRepo.findByUserEmail(email);
+        return currUser.getUserPassword() == password;
+    }
 }

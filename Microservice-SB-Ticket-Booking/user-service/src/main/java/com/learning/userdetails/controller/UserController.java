@@ -19,16 +19,35 @@ public class UserController {
         return userService.createUser(userRequestInput);
     }
     @GetMapping("/info")
+
     public UserRequestOutput getUserInfo(@RequestParam("email") String email){
         return userService.getUserInfo(email);
     }
+
+    /**
+     * Mapping for Bus Related to User
+     * @param email
+     * @return
+     */
+
     @GetMapping("/info/bus")
     public BusOppRequestOutput getBusUserInfo(@RequestParam("email") String email){
         return userService.getBusUserInfo(email);
     }
+    @GetMapping("/info/bus/isVerified")
+    public boolean getUserIsVerified(@RequestParam("email") String email ,@RequestParam("password")String password){
+        return userService.getUserIsVerified(email,password);
+    }
 
+    /**
+     * Mapping for Ticket Related to User
+     * @param email
+     * @return
+     */
     @GetMapping("/info/ticket")
     public UserDetailsForTicket getUserInfoForTicket(@RequestParam("email") String email){
         return userService.getUserInfoForTicket(email);
     }
+
+
 }
