@@ -4,15 +4,12 @@ import com.learning.busservice.model.Bus;
 import com.learning.busservice.model.dto.BusDetailsForTicket;
 import com.learning.busservice.model.dto.BusOppRequestInput;
 import com.learning.busservice.model.dto.BusRequestInput;
+import com.learning.busservice.model.dto.BusRequestOutput;
 import com.learning.busservice.repository.IBusRepo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalTime;
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
 
 @Service
 public class BusService {
@@ -40,9 +37,16 @@ public class BusService {
         return "A new Bus service is created : "+ savedBus.getBusNumber();
     }
 
-    public String searchBus(String cityFrom, String cityTo) {
+    public List<BusRequestOutput> searchBus(String cityFrom, String cityTo) {
 
-        return "empty";
+        boolean busList;
+        return List<Bus> busList = busRepo.findAll()
+                .stream()
+                .filter(busInfo -> busInfo.getBusCityFrom().equals(cityFrom))
+                .filter(busInfo -> busInfo.getBusCityTo().equals(cityTo))
+                .toList();
+
+        
     }
 
     public boolean busIsValid(String busNumber) {
@@ -74,16 +78,14 @@ public class BusService {
         return busRepo.findAll();
     }
 
-    public String removeBus(String busNumber) {
-        List<Bus> origionalList = getAllBus();
-        for(Bus i:origionalList){
-            if(i.getBusNumber().equals(busNumber)){
-                origionalList.remove(i);
-                return "bus got deleted";
-
-            }
+    public String removeBus(String busNumber, String email) {
+        Bus currBus = busRepo.findByBusNumber(busNumber);
+        String busOppEmail = currBus.getBusOppEmail();
+        if(busOppEmail.equals(email)){
+            busRepo.delete(currBus);
+            return "Bus Removed Successfully !!! ";
         }
-        return "bus not deleted";
+        return "Only Valid bus Operator can remove Bus.!!!!";
     }
 
 

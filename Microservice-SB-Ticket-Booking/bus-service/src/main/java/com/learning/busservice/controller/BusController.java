@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -28,6 +29,7 @@ public class BusController {
     RestTemplate restTemplate;
     @Autowired
     BusService busService;
+    PasswordEncoder passwordEncoder;
 
     private final WebClient.Builder webClientBuilder;
 
@@ -76,7 +78,29 @@ public class BusController {
         return busService.getAllBus();
     }
     @DeleteMapping("/remove")
-    public String deleteBus(@RequestParam("busNumber") String busNumber){
-        return busService.removeBus(busNumber);
+    public String deleteBus(@RequestParam("busNumber") String busNumber,@RequestParam("email") String email,
+                            @RequestParam("password") String userPassword){
+        if(email.endsWith("@bus.com")){
+
+//           BusOppRequestInput oppDetails =
+//                    restTemplate.getForObject("http://user-service/api/user/info/bus?email=bus1@bus.com",
+//                    BusOppRequestInput.class);
+
+            boolean isVerified = webClientBuilder.build().get()
+                    .uri("http://user-service/api/user/info/bus?email="+email)
+                    .retrieve()
+                    .bodyToMono(boolean.class)
+                    .block();
+
+            if(isVerified==false){
+                return "Bus operator not found or Invalid credentials!!! ";
+            }
+            return busService.removeBus(busNumber,email);
+
+        }
+
+        return "Only bus operator can remove bus!!!";
+
     }
+
 }
