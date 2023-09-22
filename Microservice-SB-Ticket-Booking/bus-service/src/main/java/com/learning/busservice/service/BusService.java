@@ -48,12 +48,12 @@ public class BusService {
 
 
 
-       List<Bus> busList = busRepo.findAll()
+        List<Bus> busList = busRepo.findAll()
                 .stream()
                 .filter(busInfo -> busInfo.getBusCityFrom().equals(cityFrom))
                 .filter(busInfo -> busInfo.getBusCityTo().equals(cityTo))
                 .toList();
-       List<BusRequestOutput> outputList = new ArrayList<>();
+        List<BusRequestOutput> outputList = new ArrayList<>();
 
         for (Bus currBus : busList) {
 

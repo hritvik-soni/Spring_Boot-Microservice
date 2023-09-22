@@ -9,6 +9,8 @@ import com.learning.userdetails.repository.IUserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserService {
     @Autowired
@@ -83,4 +85,9 @@ public class UserService {
         User currUser = userRepo.findByUserEmail(email);
         return currUser.getUserPassword() == password;
     }
+
+    public List<User> getAllUsers() {
+        return userRepo.findAll();
+    }
+
 }
