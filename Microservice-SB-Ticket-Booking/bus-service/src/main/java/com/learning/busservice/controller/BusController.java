@@ -39,17 +39,13 @@ public class BusController {
 
 
     @PostMapping("/new")
-    public String createBus(@Valid @RequestBody BusRequestInput busRequestInput, @RequestParam("email") String email){
-        System.out.println("user-service/api/user/info/bus?email="+email);
-//        String uri = "user-service/api/user/info/bus" ;
+    public String createBus(@Valid @RequestBody BusRequestInput busRequestInput, @RequestParam("email") String email
+                                    ,@RequestParam("password") String userPassword){
+        userPassword = passwordEncoder.encode(userPassword);
         if(email.endsWith("@bus.com")){
 
-//           BusOppRequestInput oppDetails =
-//                    restTemplate.getForObject("http://user-service/api/user/info/bus?email=bus1@bus.com",
-//                    BusOppRequestInput.class);
-
             BusOppRequestInput oppDetails = webClientBuilder.build().get()
-                    .uri("http://user-service/api/user/info/bus?email="+email)
+                    .uri("http://user-service/api/user/info/bus?email="+email+"&password="+userPassword)
                     .retrieve()
                     .bodyToMono(BusOppRequestInput.class)
                     .block();
@@ -84,6 +80,7 @@ public class BusController {
     @DeleteMapping("/remove")
     public String deleteBus(@RequestParam("busNumber") String busNumber,@RequestParam("email") String email,
                             @RequestParam("password") String userPassword){
+        userPassword = passwordEncoder.encode(userPassword);
         if(email.endsWith("@bus.com")){
 
 //           BusOppRequestInput oppDetails =

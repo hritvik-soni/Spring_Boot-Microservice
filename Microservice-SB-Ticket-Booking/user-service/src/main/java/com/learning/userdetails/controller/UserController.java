@@ -1,10 +1,7 @@
 package com.learning.userdetails.controller;
 
 import com.learning.userdetails.model.User;
-import com.learning.userdetails.model.dto.BusOppRequestOutput;
-import com.learning.userdetails.model.dto.UserDetailsForTicket;
-import com.learning.userdetails.model.dto.UserRequestInput;
-import com.learning.userdetails.model.dto.UserRequestOutput;
+import com.learning.userdetails.model.dto.*;
 import com.learning.userdetails.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +28,18 @@ public class UserController {
         return userService.getUserInfo(email);
     }
 
+    @DeleteMapping("/remove")
+    public String removeUser(@RequestParam("email") String email,@RequestParam("password") String password){
+
+        return userService.removeUser(email,password);
+    }
+    @PutMapping("/update")
+    public String updateUser(@RequestParam("email") String email, @RequestParam("password") String password,
+                             @RequestBody UserUpdateRequestInput updateRequestInput){
+
+        return userService.updateUser(email,password,updateRequestInput);
+    }
+
     /**
      * Mapping for Bus Related to User
      * @param email
@@ -38,8 +47,9 @@ public class UserController {
      */
 
     @GetMapping("/info/bus")
-    public BusOppRequestOutput getBusUserInfo(@RequestParam("email") String email){
-        return userService.getBusUserInfo(email);
+    public BusOppRequestOutput getBusUserInfo(@RequestParam("email") String email,
+                                              @RequestParam("password") String userPassword){
+        return userService.getBusUserInfo(email,userPassword);
     }
     @GetMapping("/info/bus/isVerified")
     public boolean getUserIsVerified(@RequestParam("email") String email ,@RequestParam("password")String password){
@@ -55,8 +65,6 @@ public class UserController {
     public UserDetailsForTicket getUserInfoForTicket(@RequestParam("email") String email){
         return userService.getUserInfoForTicket(email);
     }
-//    @DeleteMapping("/remove")
-//    public String removeUser(@RequestParam("email") String email,@RequestParam("password") String password)
 
 
 }

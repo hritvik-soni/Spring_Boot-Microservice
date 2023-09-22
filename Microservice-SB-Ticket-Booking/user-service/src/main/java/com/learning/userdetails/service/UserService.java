@@ -1,12 +1,10 @@
 package com.learning.userdetails.service;
 
 import com.learning.userdetails.model.User;
-import com.learning.userdetails.model.dto.BusOppRequestOutput;
-import com.learning.userdetails.model.dto.UserDetailsForTicket;
-import com.learning.userdetails.model.dto.UserRequestInput;
-import com.learning.userdetails.model.dto.UserRequestOutput;
+import com.learning.userdetails.model.dto.*;
 import com.learning.userdetails.repository.IUserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,6 +13,7 @@ import java.util.List;
 public class UserService {
     @Autowired
     IUserRepo userRepo;
+    PasswordEncoder passwordEncoder;
 
     public String createUser(UserRequestInput userRequestInput) {
         String email = userRequestInput.getUserEmail();
@@ -27,7 +26,7 @@ public class UserService {
                 .userName(userRequestInput.getUserName())
                 .userAge(userRequestInput.getUserAge())
                 .userEmail(userRequestInput.getUserEmail())
-                .userPassword(userRequestInput.getUserPassword())
+                .userPassword(passwordEncoder.encode(userRequestInput.getUserPassword()))
                 .userCity(userRequestInput.getUserCity())
                 .userMobileNumber(userRequestInput.getUserMobileNumber())
                 .gender(userRequestInput.getGender())
@@ -53,9 +52,12 @@ public class UserService {
                 .build();
     }
 
-    public BusOppRequestOutput getBusUserInfo(String email) {
+    public BusOppRequestOutput getBusUserInfo(String email, String userPassword) {
+        boolean isVerified = getUserIsVerified(email, userPassword);
+        if (isVerified) {
+
         User currentUser = userRepo.findByUserEmail(email);
-        if(currentUser==null){
+        if (currentUser == null) {
             return null;
         }
         return BusOppRequestOutput.builder()
@@ -63,6 +65,8 @@ public class UserService {
                 .busOppNumber(currentUser.getUserMobileNumber())
                 .busOppName(currentUser.getUserName())
                 .build();
+    }
+    return null;
     }
 
     public UserDetailsForTicket getUserInfoForTicket(String email) {
@@ -90,4 +94,36 @@ public class UserService {
         return userRepo.findAll();
     }
 
+    public String removeUser(String email, String password) {
+        password = passwordEncoder.encode(password);
+        boolean isVerified = getUserIsVerified(email,password);
+        if(isVerified){
+            User currUser = userRepo.findByUserEmail(email);
+            userRepo.delete(currUser);
+            return "User deleted Successfully!!!";
+        }
+        return "Invalid Credentials!!!";
+    }
+
+    public String updateUser(String email, String password, UserUpdateRequestInput updateRequestInput) {
+        password = passwordEncoder.encode(password);
+        boolean isVerified = getUserIsVerified(email,password);
+        if(isVerified){
+            User currUser = userRepo.findByUserEmail(email);
+            if(updateRequestInput.getUserCity()!=null){
+                currUser.setUserCity(updateRequestInput.getUserCity());
+            }
+            if(updateRequestInput.getUserPassword()!=null){
+                currUser.setUserPassword(passwordEncoder.encode(updateRequestInput.getUserPassword()));
+            }
+            if(updateRequestInput.getUserMobileNumber()!=null){
+                currUser.setUserMobileNumber(updateRequestInput.getUserMobileNumber());
+            }
+            userRepo.save(currUser);
+
+            return "User details updated Successfully!!!";
+        }
+        return "Invalid Credentials!!!";
+
+    }
 }
