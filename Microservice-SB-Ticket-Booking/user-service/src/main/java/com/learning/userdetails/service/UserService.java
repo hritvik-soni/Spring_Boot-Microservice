@@ -13,7 +13,9 @@ import java.util.List;
 public class UserService {
     @Autowired
     IUserRepo userRepo;
-    PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public String createUser(UserRequestInput userRequestInput) {
         String email = userRequestInput.getUserEmail();
@@ -125,5 +127,17 @@ public class UserService {
         }
         return "Invalid Credentials!!!";
 
+    }
+
+    public UserRequestAuthOutput getUserInfoForAuth(String email) {
+        User currUser = userRepo.findByUserEmail(email);
+        if (currUser == null) {
+            return null;
+        }
+        return  UserRequestAuthOutput.builder()
+                .userEmail(currUser.getUserEmail())
+                .userPassword(currUser.getUserPassword())
+                .roles(currUser.getRoles())
+                .build();
     }
 }

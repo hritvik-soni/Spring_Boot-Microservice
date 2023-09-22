@@ -4,6 +4,7 @@ import com.learning.userdetails.model.User;
 import com.learning.userdetails.model.dto.*;
 import com.learning.userdetails.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.service.annotation.GetExchange;
 
@@ -14,6 +15,9 @@ import java.util.List;
 public class UserController {
     @Autowired
     UserService userService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @PostMapping("/new")
     public String createUser(@RequestBody UserRequestInput userRequestInput){
@@ -64,6 +68,16 @@ public class UserController {
     @GetMapping("/info/ticket")
     public UserDetailsForTicket getUserInfoForTicket(@RequestParam("email") String email){
         return userService.getUserInfoForTicket(email);
+    }
+
+    /**
+     * Mapping for Auth Related to User
+     *
+     *
+     */
+    @GetMapping("/info/auth")
+    public UserRequestAuthOutput getUserInfoForAuth (@RequestParam("email") String email){
+        return userService.getUserInfoForAuth(email);
     }
 
 

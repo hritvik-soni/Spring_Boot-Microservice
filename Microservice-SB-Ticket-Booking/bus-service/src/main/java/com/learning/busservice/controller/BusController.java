@@ -10,8 +10,10 @@ import com.learning.busservice.service.BusService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -33,7 +35,11 @@ public class BusController {
     RestTemplate restTemplate;
     @Autowired
     BusService busService;
-    PasswordEncoder passwordEncoder;
+
+
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     private final WebClient.Builder webClientBuilder;
 
