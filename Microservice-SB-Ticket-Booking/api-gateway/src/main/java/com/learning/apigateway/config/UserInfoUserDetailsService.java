@@ -1,7 +1,5 @@
 package com.learning.apigateway.config;
 
-
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -32,12 +30,4 @@ public class UserInfoUserDetailsService implements UserDetailsService {
 
     }
 
-//    public UserRequestAuthOutput getUserInfo (String email){
-//
-//        return   webClientBuilder.build().get()
-//                .uri("http://user-service/api/user/info/auth?email=" + email)
-//                .retrieve()
-//                .bodyToMono(UserRequestAuthOutput.class)
-//                .block();
-//    }
 }
