@@ -1,6 +1,7 @@
 package com.learning.busservice.controller;
 
 import com.learning.busservice.config.WebClientConfig;
+import com.learning.busservice.model.Bus;
 import com.learning.busservice.model.dto.BusDetailsForTicket;
 import com.learning.busservice.model.dto.BusOppRequestInput;
 import com.learning.busservice.model.dto.BusRequestInput;
@@ -16,6 +17,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import java.net.URI;
 import java.net.URL;
 import java.net.http.HttpRequest;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -68,5 +70,13 @@ public class BusController {
     @GetMapping("/detail")
     public BusDetailsForTicket detailBus(@RequestParam("busNumber") String busNumber){
         return busService.detailBus(busNumber);
+    }
+    @GetMapping("/buses")
+    public List<Bus> getAllBus(){
+        return busService.getAllBus();
+    }
+    @DeleteMapping("/remove")
+    public String deleteBus(@RequestParam("busNumber") String busNumber){
+        return busService.removeBus(busNumber);
     }
 }

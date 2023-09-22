@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalTime;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -69,4 +70,22 @@ public class BusService {
 
                 .build();
     }
+    public List<Bus> getAllBus() {
+        return busRepo.findAll();
+    }
+
+    public String removeBus(String busNumber) {
+        List<Bus> origionalList = getAllBus();
+        for(Bus i:origionalList){
+            if(i.getBusNumber().equals(busNumber)){
+                origionalList.remove(i);
+                return "bus got deleted";
+
+            }
+        }
+        return "bus not deleted";
+    }
+
+
+
 }
