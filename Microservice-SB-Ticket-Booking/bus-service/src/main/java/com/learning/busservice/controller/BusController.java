@@ -45,13 +45,13 @@ public class BusController {
 
 
     @PostMapping("/new")
-    public String createBus(@Valid @RequestBody BusRequestInput busRequestInput, @RequestParam("email") String email
-                                    ,@RequestParam("password") String userPassword){
-        userPassword = passwordEncoder.encode(userPassword);
+    public String createBus(@Valid @RequestBody BusRequestInput busRequestInput, @RequestHeader("UserEmail") String email){
+
+
         if(email.endsWith("@bus.com")){
 
             BusOppRequestInput oppDetails = webClientBuilder.build().get()
-                    .uri("http://user-service/api/user/info/bus?email="+email+"&password="+userPassword)
+                    .uri("http://user-service/api/user/info/bus?email="+email)
                     .retrieve()
                     .bodyToMono(BusOppRequestInput.class)
                     .block();

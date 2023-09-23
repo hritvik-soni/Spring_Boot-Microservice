@@ -50,9 +50,8 @@ public class UserController {
      */
 
     @GetMapping("/info/bus")
-    public BusOppRequestOutput getBusUserInfo(@RequestParam("email") String email,
-                                              @RequestParam("password") String userPassword){
-        return userService.getBusUserInfo(email,userPassword);
+    public BusOppRequestOutput getBusUserInfo(@RequestParam("email") String email){
+        return userService.getBusUserInfo(email);
     }
     @GetMapping("/info/bus/isVerified")
     public boolean getUserIsVerified(@RequestParam("email") String email ,@RequestParam("password")String password){

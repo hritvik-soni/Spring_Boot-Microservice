@@ -54,21 +54,18 @@ public class UserService {
                 .build();
     }
 
-    public BusOppRequestOutput getBusUserInfo(String email, String userPassword) {
-        boolean isVerified = getUserIsVerified(email, userPassword);
-        if (isVerified) {
+    public BusOppRequestOutput getBusUserInfo(String email) {
+//        boolean isVerified = getUserIsVerified(email, userPassword);
+//        if (isVerified) { }
 
         Users currentUsers = userRepo.findByUserEmail(email);
         if (currentUsers == null) {
-            return null;
-        }
+            return null;}
         return BusOppRequestOutput.builder()
                 .busOppEmail(currentUsers.getUserEmail())
                 .busOppNumber(currentUsers.getUserMobileNumber())
                 .busOppName(currentUsers.getUserName())
                 .build();
-    }
-    return null;
     }
 
     public UserDetailsForTicket getUserInfoForTicket(String email) {
