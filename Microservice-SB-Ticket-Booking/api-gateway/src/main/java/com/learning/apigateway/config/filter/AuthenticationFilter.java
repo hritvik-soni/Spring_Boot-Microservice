@@ -31,7 +31,7 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
         return ((exchange, chain) -> {
             ServerHttpRequest request=null;
             if (validator.isSecured.test(exchange.getRequest())) {
-                //header contains token or not
+
                 if (!exchange.getRequest().getHeaders().containsKey(HttpHeaders.AUTHORIZATION)) {
                     throw new RuntimeException("missing authorization header");
                 }
@@ -54,6 +54,7 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
                     throw new RuntimeException("un authorized access to application");
                 }
             }
+
             return chain.filter(exchange.mutate().request(request).build());
         });
     }
