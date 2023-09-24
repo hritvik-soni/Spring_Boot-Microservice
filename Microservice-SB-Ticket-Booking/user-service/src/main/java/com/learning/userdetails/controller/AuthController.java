@@ -34,4 +34,9 @@ public class AuthController {
         service.validateToken(token);
         return "Token is valid";
     }
+    @GetMapping("/print")
+    public String printToken(@RequestHeader("token") String token) {
+        System.out.println(token);
+        return token;
+    }
 }
