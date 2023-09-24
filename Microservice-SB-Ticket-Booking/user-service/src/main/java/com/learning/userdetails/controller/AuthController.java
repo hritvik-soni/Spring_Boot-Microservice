@@ -23,7 +23,7 @@ public class AuthController {
     public String getToken(@RequestBody AuthRequest authRequest) {
         Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getEmail(), authRequest.getPassword()));
         if (authenticate.isAuthenticated()) {
-            return service.generateToken(authRequest.getEmail());
+            return service.generateToken(authRequest.getEmail(), authRequest.getPassword());
         } else {
             throw new RuntimeException("invalid access");
         }

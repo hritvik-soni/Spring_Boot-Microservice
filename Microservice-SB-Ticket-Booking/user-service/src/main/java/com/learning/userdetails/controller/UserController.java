@@ -32,16 +32,18 @@ public class UserController {
     }
 
     @DeleteMapping("/remove")
-    public String removeUser(@RequestParam("email") String email,@RequestParam("password") String password){
+    public String removeUser(@RequestHeader("userEmail") String email ){
+//            ,@RequestHeader("password") String password){
 
-        return userService.removeUser(email,password);
+        return userService.removeUser(email);
     }
-    @PutMapping("/update")
-    public String updateUser(@RequestParam("email") String email, @RequestParam("password") String password,
-                             @RequestBody UserUpdateRequestInput updateRequestInput){
 
-        return userService.updateUser(email,password,updateRequestInput);
-    }
+//    @PutMapping("/update")
+//    public String updateUser(@RequestParam("email") String email, @RequestParam("password") String password,
+//                             @RequestBody UserUpdateRequestInput updateRequestInput){
+//
+//        return userService.updateUser(email,password,updateRequestInput);
+//    }
 
     /**
      * Mapping for Bus Related to User

@@ -45,9 +45,9 @@ public class BusController {
 
 
     @PostMapping("/new")
-    public String createBus(@Valid @RequestBody BusRequestInput busRequestInput, @RequestHeader("UserEmail") String email){
+    public String createBus(@Valid @RequestBody BusRequestInput busRequestInput, @RequestHeader("userEmail") String email){
 
-
+        System.out.println("in bus new service" + email);
         if(email.endsWith("@bus.com")){
 
             BusOppRequestInput oppDetails = webClientBuilder.build().get()

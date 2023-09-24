@@ -22,6 +22,10 @@ public class JwtUtil {
         return extractClaims(token, Claims::getSubject) ;
 
     }
+    public String extractPassword(String token){
+        return extractClaims(token, Claims::getSubject) ;
+
+    }
 
     public <T> T extractClaims(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(token);

@@ -18,8 +18,8 @@ public class AuthService {
     private JwtService jwtService;
 
 
-    public String generateToken(String username) {
-        return jwtService.generateToken(username);
+    public String generateToken(String email,String password) {
+        return jwtService.generateToken(email,password);
     }
 
     public void validateToken(String token) {

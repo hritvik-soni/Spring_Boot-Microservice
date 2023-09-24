@@ -29,7 +29,7 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
     @Override
     public GatewayFilter apply(Config config) {
         return ((exchange, chain) -> {
-            ServerHttpRequest request=null;
+            ServerHttpRequest headerRequest = null;
             if (validator.isSecured.test(exchange.getRequest())) {
 
                 if (!exchange.getRequest().getHeaders().containsKey(HttpHeaders.AUTHORIZATION)) {
@@ -45,9 +45,10 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
 //                    template.getForObject("http://user-service/api/auth/validate?token" + authHeader, String.class);
                     jwtUtil.validateToken(authHeader);
 
-                    request= exchange.getRequest()
+                    headerRequest= exchange.getRequest()
                             .mutate()
-                            .header("userEmail",jwtUtil.extractEmail(authHeader)).build();
+                            .header("userEmail",jwtUtil.extractEmail(authHeader))
+                            .build();
 
                 } catch (Exception e) {
                     System.out.println("invalid access...!");
@@ -55,7 +56,7 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
                 }
             }
 
-            return chain.filter(exchange.mutate().request(request).build());
+            return chain.filter(exchange.mutate().request(headerRequest).build());
         });
     }
 
