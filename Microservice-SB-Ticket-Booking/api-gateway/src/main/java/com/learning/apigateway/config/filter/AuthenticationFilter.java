@@ -49,6 +49,7 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
                             .mutate()
                             .header("userEmail",jwtUtil.extractEmail(authHeader))
                             .build();
+                    System.out.println(jwtUtil.extractEmail(authHeader));
 
                 } catch (Exception e) {
                     System.out.println("invalid access...!");

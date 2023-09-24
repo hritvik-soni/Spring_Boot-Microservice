@@ -33,6 +33,7 @@ public class UserController {
 
     @DeleteMapping("/remove")
     public String removeUser(@RequestHeader("userEmail") String email ){
+        System.out.println(email);
 //            ,@RequestHeader("password") String password){
 
         return userService.removeUser(email);
