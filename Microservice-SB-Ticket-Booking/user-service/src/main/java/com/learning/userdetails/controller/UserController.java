@@ -32,7 +32,7 @@ public class UserController {
     }
 
     @DeleteMapping("/remove")
-    public String removeUser(@RequestHeader("userEmail") String email ){
+    public String removeUser(@RequestHeader("email") String email ){
         System.out.println(email);
 //            ,@RequestHeader("password") String password){
 
@@ -62,9 +62,11 @@ public class UserController {
     }
 
     /**
+     *
      * Mapping for Ticket Related to User
      * @param email
      * @return
+     *
      */
     @GetMapping("/info/ticket")
     public UserDetailsForTicket getUserInfoForTicket(@RequestParam("email") String email){
