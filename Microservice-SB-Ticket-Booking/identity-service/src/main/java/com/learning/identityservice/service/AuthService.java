@@ -6,6 +6,7 @@ import com.learning.identityservice.repository.UserCredentialRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.Optional;
 
@@ -14,6 +15,7 @@ public class AuthService {
 
     @Autowired
     private UserCredentialRepository repository;
+
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -36,15 +38,25 @@ public class AuthService {
     }
 
     public void validateToken(String token) {
-        jwtService.validateToken(token);
+       jwtService.validateToken(token);
+
+
     }
 
+    public String removeUser(String token) {
 
-    public String removeUser(String email) {
+        try {
+            validateToken(token);
+           String email= jwtService.extractEmail(token);
 
-        Optional<UserCredential> user = repository.findByEmail(email);
-        Integer userId =  user.get().getId();
-        repository.deleteById(userId);
-        return "user deleted from auth";
+             Optional<UserCredential> user = repository.findByEmail(email);
+             Integer userId =  user.get().getId();
+             repository.deleteById(userId);
+             return "user deleted from auth";
+         }
+           catch (Exception e) {
+            return "Please retry";
+           }
     }
+
 }

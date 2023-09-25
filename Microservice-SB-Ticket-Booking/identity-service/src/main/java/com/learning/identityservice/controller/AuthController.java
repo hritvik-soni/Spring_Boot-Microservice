@@ -34,13 +34,12 @@ public class AuthController {
     }
 
     @GetMapping("/validate")
-    public String validateToken(@RequestParam("token") String token) {
-        service.validateToken(token);
-        return "Token is valid";
+    public void validateToken(@RequestParam("token") String token) {
+          service.validateToken(token);
     }
 
     @GetMapping("/removeUser")
-    public String removeUser(@RequestParam("email") String token) {
+    public String removeUser(@RequestParam("token") String token) {
         return service.removeUser(token);
 
     }
