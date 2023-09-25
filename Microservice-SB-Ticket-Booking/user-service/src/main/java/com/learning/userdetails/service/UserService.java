@@ -3,15 +3,20 @@ package com.learning.userdetails.service;
 import com.learning.userdetails.model.Users;
 import com.learning.userdetails.model.dto.*;
 import com.learning.userdetails.repository.IUserRepo;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
     @Autowired
     IUserRepo userRepo;
@@ -19,7 +24,24 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    private final WebClient.Builder webClientBuilder;
+
     public String createUser(UserRequestInput userRequestInput) {
+
+        String password = passwordEncoder.encode(userRequestInput.getUserPassword());
+        UserCredentialInput userCredentialInput = UserCredentialInput.builder()
+                .name(userRequestInput.getUserName())
+                .email(userRequestInput.getUserEmail())
+                .password(password)
+                .build();
+
+        Mono<Void> result =  webClientBuilder.build().post()
+          .uri("http://identity-service/auth/register")
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(userCredentialInput)
+                .retrieve()
+                .bodyToMono(Void.class);
+
         String email = userRequestInput.getUserEmail();
         email = email.substring(email.length()-8,email.length());
         String role = "ROLE_USER";
@@ -30,7 +52,7 @@ public class UserService {
                 .userName(userRequestInput.getUserName())
                 .userAge(userRequestInput.getUserAge())
                 .userEmail(userRequestInput.getUserEmail())
-                .userPassword(passwordEncoder.encode(userRequestInput.getUserPassword()))
+                .userPassword(password)
                 .userCity(userRequestInput.getUserCity())
                 .userMobileNumber(userRequestInput.getUserMobileNumber())
                 .gender(userRequestInput.getGender())
@@ -41,8 +63,12 @@ public class UserService {
     }
 
     public UserRequestOutput getUserInfo(String email) {
-        Optional<Users> currentUsers = userRepo.findByUserEmail(email);
-        return currentUsers.map(users -> UserRequestOutput.builder()
+        Users users = userRepo.findByUserEmail(email);
+
+        if(users==null){
+            return null;
+        }
+        return  UserRequestOutput.builder()
                 .userName(users.getUserName())
                 .userAge(users.getUserAge())
                 .userEmail(users.getUserEmail())
@@ -50,38 +76,44 @@ public class UserService {
                 .userMobileNumber(users.getUserMobileNumber())
                 .gender(users.getGender())
                 .roles(users.getRoles())
-                .build()).orElse(null);
+                .build();
     }
 
     public BusOppRequestOutput getBusUserInfo(String email) {
 //        boolean isVerified = getUserIsVerified(email, userPassword);
 //        if (isVerified) { }
 
-        Optional<Users> currentUsers = userRepo.findByUserEmail(email);
-        return currentUsers.map(users -> BusOppRequestOutput.builder()
+        Users users = userRepo.findByUserEmail(email);
+        if(users==null){
+            return null;
+        }
+        return  BusOppRequestOutput.builder()
                 .busOppEmail(users.getUserEmail())
                 .busOppNumber(users.getUserMobileNumber())
                 .busOppName(users.getUserName())
-                .build()).orElse(null);
+                .build();
     }
 
     public UserDetailsForTicket getUserInfoForTicket(String email) {
-        Optional<Users> currentUsers = userRepo.findByUserEmail(email);
+      Users users = userRepo.findByUserEmail(email);
+        if(users==null){
+           return null;
+        }
 
-        return currentUsers.map(users -> UserDetailsForTicket.builder()
+        return  UserDetailsForTicket.builder()
                 .userName(users.getUserName())
                 .userEmail(users.getUserEmail())
                 .userMobileNumber(users.getUserMobileNumber())
                 .userAge(users.getUserAge())
                 .gender(users.getGender())
 
-                .build()).orElse(null);
+                .build();
 
     }
 
     public boolean getUserIsVerified(String email, String password) {
-        Optional<Users> currUsers = userRepo.findByUserEmail(email);
-        return Objects.equals(currUsers.get().getUserPassword(), password);
+         Users currUsers = userRepo.findByUserEmail(email);
+        return Objects.equals(currUsers.getUserPassword(), password);
     }
 
     public List<Users> getAllUsers() {
@@ -92,50 +124,53 @@ public class UserService {
 //        password = passwordEncoder.encode(password);
 //        boolean isVerified = getUserIsVerified(email,password);
 //        if(isVerified){
-        if(userRepo.findByUserEmail(email).isPresent()){
-            Optional<Users> currUsers = userRepo.findByUserEmail(email);
-            Integer userId= currUsers.get().getUserId();
-//            userRepo.delete(currUsers);
-            userRepo.deleteById(userId);
+
+         Users currUsers = userRepo.findByUserEmail(email);
+           if(currUsers!=null){
+               userRepo.delete(currUsers);
             return "User deleted Successfully!!!";
-        }
-        return "Invalid Credentials!!!";
+           }
+           return "Invalid Credentials!!!";
     }
 
-//    public String updateUser(String email, String password, UserUpdateRequestInput updateRequestInput) {
-//        password = passwordEncoder.encode(password);
-//        boolean isVerified = getUserIsVerified(email,password);
-//
-//        if(isVerified){
-//
-//           Optional<Users> currUsers = userRepo.findByUserEmail(email);
-//
-//           Integer userId = currUsers.get().getUserId();
-//
-//            if(updateRequestInput.getUserCity()!=null){
-//                currUsers.get().setUserCity(updateRequestInput.getUserCity());
-//            }
-//            if(updateRequestInput.getUserPassword()!=null){
-//                currUsers.get().setUserPassword(passwordEncoder.encode(updateRequestInput.getUserPassword()));
-//            }
-//            if(updateRequestInput.getUserMobileNumber()!=null){
-//                currUsers.get().setUserMobileNumber(updateRequestInput.getUserMobileNumber());
-//            }
-//
-//             userRepo.save(currUsers);
-//
-//            return "User details updated Successfully!!!";
-//        }
-//        return "Invalid Credentials!!!";
-//
-//    }
+    public String updateUser(String email, String password, UserUpdateRequestInput updateRequestInput) {
+        password = passwordEncoder.encode(password);
+        boolean isVerified = getUserIsVerified(email,password);
+
+        if(isVerified){
+
+          Users currUsers = userRepo.findByUserEmail(email);
+
+           Integer userId = currUsers.getUserId();
+
+            if(updateRequestInput.getUserCity()!=null){
+                currUsers.setUserCity(updateRequestInput.getUserCity());
+            }
+            if(updateRequestInput.getUserPassword()!=null){
+                currUsers.setUserPassword(passwordEncoder.encode(updateRequestInput.getUserPassword()));
+            }
+            if(updateRequestInput.getUserMobileNumber()!=null){
+                currUsers.setUserMobileNumber(updateRequestInput.getUserMobileNumber());
+            }
+
+             userRepo.save(currUsers);
+
+            return "User details updated Successfully!!!";
+        }
+        return "Invalid Credentials!!!";
+
+    }
 
     public UserRequestAuthOutput getUserInfoForAuth(String email) {
-        Optional<Users> currUsers = userRepo.findByUserEmail(email);
-        return currUsers.map(users -> UserRequestAuthOutput.builder()
+        Users users = userRepo.findByUserEmail(email);
+
+        if(users==null){
+            return null;
+        }
+        return  UserRequestAuthOutput.builder()
                 .userEmail(users.getUserEmail())
                 .userPassword(users.getUserPassword())
                 .roles(users.getRoles())
-                .build()).orElse(null);
+                .build();
     }
 }

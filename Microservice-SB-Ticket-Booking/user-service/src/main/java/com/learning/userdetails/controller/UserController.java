@@ -3,13 +3,16 @@ package com.learning.userdetails.controller;
 import com.learning.userdetails.model.Users;
 import com.learning.userdetails.model.dto.*;
 import com.learning.userdetails.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/user")
 public class UserController {
     @Autowired
@@ -18,8 +21,11 @@ public class UserController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    private final WebClient.Builder webClientBuilder;
+
     @PostMapping("/new")
     public String createUser(@RequestBody UserRequestInput userRequestInput){
+
         return userService.createUser(userRequestInput);
     }
     @GetMapping("/all")
@@ -39,12 +45,12 @@ public class UserController {
         return userService.removeUser(email);
     }
 
-//    @PutMapping("/update")
-//    public String updateUser(@RequestParam("email") String email, @RequestParam("password") String password,
-//                             @RequestBody UserUpdateRequestInput updateRequestInput){
-//
-//        return userService.updateUser(email,password,updateRequestInput);
-//    }
+    @PutMapping("/update")
+    public String updateUser(@RequestParam("email") String email, @RequestParam("password") String password,
+                             @RequestBody UserUpdateRequestInput updateRequestInput){
+
+        return userService.updateUser(email,password,updateRequestInput);
+    }
 
     /**
      * Mapping for Bus Related to User

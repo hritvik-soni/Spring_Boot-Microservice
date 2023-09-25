@@ -1,7 +1,6 @@
-package com.learning.userdetails.config;
+package com.learning.identityservice.config;
 
-
-import com.learning.userdetails.model.Users;
+import com.learning.identityservice.entity.UserCredential;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -9,12 +8,12 @@ import java.util.Collection;
 
 public class CustomUserDetails implements UserDetails {
 
-    private String email;
+    private String username;
     private String password;
 
-    public CustomUserDetails(Users user) {
-        this.email = user.getUserEmail();
-        this.password = user.getUserPassword();
+    public CustomUserDetails(UserCredential userCredential) {
+        this.username = userCredential.getEmail();
+        this.password = userCredential.getPassword();
     }
 
     @Override
@@ -29,7 +28,7 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return email;
+        return username;
     }
 
     @Override

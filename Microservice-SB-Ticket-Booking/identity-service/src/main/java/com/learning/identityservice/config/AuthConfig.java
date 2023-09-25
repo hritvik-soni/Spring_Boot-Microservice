@@ -1,11 +1,10 @@
-package com.learning.userdetails.config;
+package com.learning.identityservice.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -28,10 +27,9 @@ public class AuthConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/user/new", "/api/auth/token", "/api/auth/validate","/eureka/**").permitAll()
-                .requestMatchers("/api/**").authenticated())
-                .httpBasic(Customizer.withDefaults()).build();
+                .authorizeHttpRequests(auth->auth
+                .requestMatchers("/auth/register", "/auth/token", "/auth/validate").permitAll())
+                .build();
     }
 
     @Bean

@@ -24,7 +24,6 @@ public class TicketController {
 
     private final WebClient.Builder webClientBuilder;
 
-   private final
 
    @Autowired
     TicketService ticketService;
