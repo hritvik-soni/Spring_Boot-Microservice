@@ -35,12 +35,15 @@ public class UserService {
                 .password(password)
                 .build();
 
-        Mono<Void> result =  webClientBuilder.build().post()
+        Mono<String> result =  webClientBuilder.build().post()
           .uri("http://identity-service/auth/register")
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(userCredentialInput)
                 .retrieve()
-                .bodyToMono(Void.class);
+                .bodyToMono(String.class);
+                result.block();
+
+        System.out.println("after register link call "+result.block());
 
         String email = userRequestInput.getUserEmail();
         email = email.substring(email.length()-8,email.length());
@@ -127,6 +130,13 @@ public class UserService {
 
          Users currUsers = userRepo.findByUserEmail(email);
            if(currUsers!=null){
+           String result =  webClientBuilder.build().delete()
+                       .uri("http://identity-service/auth/removeUser/"+email)
+                       .retrieve()
+                       .bodyToMono(String.class)
+                       .block();
+
+               System.out.println("after register link call "+result);
                userRepo.delete(currUsers);
             return "User deleted Successfully!!!";
            }

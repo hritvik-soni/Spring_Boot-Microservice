@@ -2,11 +2,12 @@ package com.learning.identityservice.service;
 
 import com.learning.identityservice.dto.UserCredentialInput;
 import com.learning.identityservice.entity.UserCredential;
-
 import com.learning.identityservice.repository.UserCredentialRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class AuthService {
@@ -27,7 +28,7 @@ public class AuthService {
                 .password(credential.getPassword())
                 .build();
         repository.save(newUser);
-        return "user added to the system";
+        return "user added success for auth";
     }
 
     public String generateToken(String username) {
@@ -39,4 +40,11 @@ public class AuthService {
     }
 
 
+    public String removeUser(String email) {
+
+        Optional<UserCredential> user = repository.findByEmail(email);
+        Integer userId =  user.get().getId();
+        repository.deleteById(userId);
+        return "user deleted from auth";
+    }
 }

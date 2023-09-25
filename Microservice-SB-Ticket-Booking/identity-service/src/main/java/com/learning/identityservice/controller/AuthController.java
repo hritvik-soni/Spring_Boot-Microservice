@@ -2,8 +2,6 @@ package com.learning.identityservice.controller;
 
 import com.learning.identityservice.dto.AuthRequest;
 import com.learning.identityservice.dto.UserCredentialInput;
-
-
 import com.learning.identityservice.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -39,5 +37,11 @@ public class AuthController {
     public String validateToken(@RequestParam("token") String token) {
         service.validateToken(token);
         return "Token is valid";
+    }
+
+    @GetMapping("/removeUser")
+    public String removeUser(@RequestParam("email") String token) {
+        return service.removeUser(token);
+
     }
 }

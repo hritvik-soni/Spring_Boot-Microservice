@@ -39,7 +39,7 @@ public class UserController {
 
     @DeleteMapping("/remove")
     public String removeUser(@RequestHeader("email") String email ){
-        System.out.println(email);
+        System.out.println("Inside remove mapping for user"+email);
 //            ,@RequestHeader("password") String password){
 
         return userService.removeUser(email);

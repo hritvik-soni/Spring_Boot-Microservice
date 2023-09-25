@@ -1,7 +1,6 @@
 package com.learning.identityservice.config;
 
 import com.learning.identityservice.entity.UserCredential;
-
 import com.learning.identityservice.repository.UserCredentialRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,7 +18,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<UserCredential> credential = repository.findByUserEmail(username);
+        Optional<UserCredential> credential = repository.findByEmail(username);
         return credential.map(CustomUserDetails::new).orElseThrow(() -> new UsernameNotFoundException("user not found with name :" + username));
     }
 }
