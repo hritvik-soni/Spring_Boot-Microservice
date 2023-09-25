@@ -13,7 +13,6 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -83,8 +82,6 @@ public class UserService {
     }
 
     public BusOppRequestOutput getBusUserInfo(String email) {
-//        boolean isVerified = getUserIsVerified(email, userPassword);
-//        if (isVerified) { }
 
         Users users = userRepo.findByUserEmail(email);
         if(users==null){
@@ -109,49 +106,40 @@ public class UserService {
                 .userMobileNumber(users.getUserMobileNumber())
                 .userAge(users.getUserAge())
                 .gender(users.getGender())
-
                 .build();
 
     }
 
-    public boolean getUserIsVerified(String email, String password) {
-         Users currUsers = userRepo.findByUserEmail(email);
-        return Objects.equals(currUsers.getUserPassword(), password);
-    }
+//    public boolean getUserIsVerified(String email) {
+//         Users currUsers = userRepo.findByUserEmail(email);
+//        return Objects.equals(currUsers.getUserPassword());
+//    }
 
     public List<Users> getAllUsers() {
         return userRepo.findAll();
     }
 
-    public String removeUser(String email) {
-//        password = passwordEncoder.encode(password);
-//        boolean isVerified = getUserIsVerified(email,password);
-//        if(isVerified){
+    public String removeUser(String email,String token) {
 
          Users currUsers = userRepo.findByUserEmail(email);
            if(currUsers!=null){
            String result =  webClientBuilder.build().delete()
                        .uri("http://identity-service/auth/removeUser/"+email)
+                        .headers(headers -> headers.setBearerAuth(token) )
                        .retrieve()
                        .bodyToMono(String.class)
                        .block();
 
-               System.out.println("after register link call "+result);
                userRepo.delete(currUsers);
-            return "User deleted Successfully!!!";
+               System.out.println(result);
+            return "User deleted Successfully!!! ";
            }
            return "Invalid Credentials!!!";
     }
 
-    public String updateUser(String email, String password, UserUpdateRequestInput updateRequestInput) {
-        password = passwordEncoder.encode(password);
-        boolean isVerified = getUserIsVerified(email,password);
-
-        if(isVerified){
+    public String updateUser(String email, UserUpdateRequestInput updateRequestInput) {
 
           Users currUsers = userRepo.findByUserEmail(email);
-
-           Integer userId = currUsers.getUserId();
 
             if(updateRequestInput.getUserCity()!=null){
                 currUsers.setUserCity(updateRequestInput.getUserCity());
@@ -162,12 +150,8 @@ public class UserService {
             if(updateRequestInput.getUserMobileNumber()!=null){
                 currUsers.setUserMobileNumber(updateRequestInput.getUserMobileNumber());
             }
-
-             userRepo.save(currUsers);
-
+            userRepo.save(currUsers);
             return "User details updated Successfully!!!";
-        }
-        return "Invalid Credentials!!!";
 
     }
 
