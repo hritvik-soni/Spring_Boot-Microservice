@@ -20,11 +20,13 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
 import java.net.URI;
 import java.net.URL;
 import java.net.http.HttpRequest;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequiredArgsConstructor
@@ -53,20 +55,18 @@ public class BusController {
                 .bodyToMono(String.class)
                 .block();
         String email = jwtUtil.extractEmail(token);
+        System.out.println(email);
 
         if(email.endsWith("@bus.com")){
 
-            BusOppRequestInput oppDetails = webClientBuilder.build().get()
+           BusOppRequestInput oppDetails = webClientBuilder.build().get()
                     .uri("http://user-service/api/user/info/bus")
-                    .headers(httpHeaders -> httpHeaders.setBearerAuth(token))
+                    .headers(headers -> headers.setBearerAuth(token))
+                    .header("token",token)
                     .retrieve()
-                    .bodyToMono(BusOppRequestInput.class)
-                    .block();
+                    .bodyToMono(BusOppRequestInput.class).block();
 
-            if(oppDetails==null){
-                return "Bus operator not found cannot create bus service";
-            }
-            return busService.createBus(busRequestInput,oppDetails);
+            return busService.createBus(busRequestInput, oppDetails);
 
         }
 
@@ -127,13 +127,10 @@ public class BusController {
 
         if(email.endsWith("@bus.com")){
 
-//           BusOppRequestInput oppDetails =
-//                    restTemplate.getForObject("http://user-service/api/user/info/bus?email=bus1@bus.com",
-//                    BusOppRequestInput.class);
-
             boolean isVerified = Boolean.TRUE.equals(webClientBuilder.build().get()
                     .uri("http://user-service/api/user/info/bus/isVerified" )
                     .headers(httpHeaders -> httpHeaders.setBearerAuth(token))
+                    .header("token",token)
                     .retrieve()
                     .bodyToMono(boolean.class)
                     .block());

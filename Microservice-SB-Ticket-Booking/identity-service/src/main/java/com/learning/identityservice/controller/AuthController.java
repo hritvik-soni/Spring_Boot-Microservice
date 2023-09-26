@@ -38,9 +38,8 @@ public class AuthController {
           service.validateToken(token);
     }
 
-    @GetMapping("/removeUser")
-    public String removeUser(@RequestParam("token") String token) {
+    @DeleteMapping("/removeUser")
+    public String removeUser(@RequestHeader("token") String token) {
         return service.removeUser(token);
-
     }
 }

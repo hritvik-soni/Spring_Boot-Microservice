@@ -125,38 +125,38 @@ public class UserController {
     }
 
 
-//    /**
-//     * mapping for testing
-//     *
-//     */
-//      @GetMapping("/print")
-//      public String print (@RequestHeader("token") String token){
-//          System.out.println("inside print");
-//          String result = webClientBuilder.build().get()
-//                  .uri("http://user-service/api/user/demo?token="+token)
-//                  .headers(headers -> headers.setBearerAuth(token))
-////                  .header("Authorization"token)
-//                  .retrieve()
-//                  .bodyToMono(String.class)
-//                  .block();
-//          return  result +"\n"+token;
-//      }
-//    @GetMapping("/demo")
-//    public String demo (@RequestParam("token") String token){
-//        System.out.println("inside demo");
-//        try{
-//            webClientBuilder.build().get()
-//                    .uri("http://identity-service/auth/validate?token="+token)
-//                    .retrieve()
-//                    .bodyToMono(String.class)
-//                    .block();
-//            return "inside valid block and verified";
-//        }
-//        catch(Exception e){
-//            return "verification failed";
-//        }
+    /**
+     * mapping for testing
+     *
+     */
+      @GetMapping("/print")
+      public String print (@RequestHeader("token") String token){
+          System.out.println("inside print");
+          String result = webClientBuilder.build().get()
+                  .uri("http://user-service/api/user/demo")
+                  .headers(headers -> headers.setBearerAuth(token))
+                  .header("token",token)
+                  .retrieve()
+                  .bodyToMono(String.class)
+                  .block();
+          return  result +"\n"+token;
+      }
+    @GetMapping("/demo")
+    public String demo (@RequestHeader("token") String token){
+        System.out.println("inside demo");
+        try{
+            webClientBuilder.build().get()
+                    .uri("http://identity-service/auth/validate?token="+token)
+                    .retrieve()
+                    .bodyToMono(String.class)
+                    .block();
+            return "inside valid block and verified";
+        }
+        catch(Exception e){
+            return "verification failed";
+        }
 
 
-}
+}}
 
 

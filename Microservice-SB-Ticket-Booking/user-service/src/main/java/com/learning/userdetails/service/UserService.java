@@ -9,6 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
@@ -34,15 +35,15 @@ public class UserService {
                 .password(password)
                 .build();
 
-        Mono<String> result =  webClientBuilder.build().post()
+        String result =  webClientBuilder.build().post()
           .uri("http://identity-service/auth/register")
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(userCredentialInput)
                 .retrieve()
-                .bodyToMono(String.class);
-                result.block();
+                .bodyToMono(String.class).block();
 
-        System.out.println("after register link call "+result.block());
+
+        System.out.println("after register link call "+result);
 
         String email = userRequestInput.getUserEmail();
         email = email.substring(email.length()-8,email.length());
@@ -123,13 +124,14 @@ public class UserService {
 
          Users currUsers = userRepo.findByUserEmail(email);
            if(currUsers!=null){
-           String result =  webClientBuilder.build().delete()
-                       .uri("http://identity-service/auth/removeUser/"+email)
-                        .headers(headers -> headers.setBearerAuth(token) )
+               System.out.println("before calling identity remove");
+         String result =  webClientBuilder.build().delete()
+                       .uri("http://identity-service/auth/removeUser")
+                        .headers(headers -> headers.setBearerAuth(token))
+                        .header("token",token)
                        .retrieve()
-                       .bodyToMono(String.class)
-                       .block();
-
+                       .bodyToMono(String.class).block();
+               System.out.println("after  calling identity remove");
                userRepo.delete(currUsers);
                System.out.println(result);
             return "User deleted Successfully!!! ";

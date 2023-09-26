@@ -45,6 +45,7 @@ public class TicketController {
         BusDetailsInput busDetailsInput = webClientBuilder.build().get()
                 .uri("http://bus-service/api/bus/detail?busNumber="+ busNumber)
                 .headers(httpHeaders -> httpHeaders.setBearerAuth(token))
+                .header("token",token)
                 .retrieve()
                 .bodyToMono(BusDetailsInput.class)
                 .block();
@@ -53,11 +54,11 @@ public class TicketController {
             return "Invalid Bus number please try again !!!";
         }
 
-//        UserDetailsForTicketInput  userDetailsForTicket =restTemplate.getForObject("user-service/api/user/info/ticket?="+ userEmail , UserDetailsForTicketInput.class);
 
         UserDetailsForTicketInput userDetailsForTicket = webClientBuilder.build().get()
                 .uri("http://user-service/api/user/info/ticket")
                 .headers(httpHeaders -> httpHeaders.setBearerAuth(token))
+                .header("token",token)
                 .retrieve()
                 .bodyToMono(UserDetailsForTicketInput.class)
                 .block();

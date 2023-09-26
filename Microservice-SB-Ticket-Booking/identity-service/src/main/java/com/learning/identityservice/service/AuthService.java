@@ -48,10 +48,11 @@ public class AuthService {
         try {
             validateToken(token);
            String email= jwtService.extractEmail(token);
-
+            System.out.println("inside remove user block before delete");
              Optional<UserCredential> user = repository.findByEmail(email);
              Integer userId =  user.get().getId();
              repository.deleteById(userId);
+            System.out.println("inside remove user block after delete");
              return "user deleted from auth";
          }
            catch (Exception e) {
